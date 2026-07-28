@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="치아를 보존하는 보아치과">
+  <title>보아치과</title>
+  <style>
+    /* ── 토큰 ──────────────────────────────── */
+    :root {
+      --ink:        #1a1a2e;
+      --ink-soft:   #4a4a6a;
+      --surface:    #ffffff;
+      --surface-2:  #f5f5f7;
+      --accent:     #2b4590;
+      --accent-2:   #4a90d9;
+      --gold:       #c9a84c;
+      --border:     #e0e0e8;
+      --text-body:  #333344;
+      --radius:     4px;
+    }
+
+    /* ── 리셋 ───────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                   "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-body);
+      background: var(--surface);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ── 맨 위 메뉴 줄 ─────────────────────── */
+    #header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 64px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    #header_menu {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+      min-width: 44px;
+      min-height: 44px;
+      justify-content: center;
+      align-items: center;
+    }
+    #header_menu span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--ink);
+      transition: opacity 0.2s;
+    }
+    #header_logo a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    #header_logo .logo-text {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--accent);
+    }
+    #header_logo .logo-sub {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--ink-soft);
+    }
+
+    /* 풀다운 메뉴 */
+    #nav_drawer {
+      display: none;
+      position: fixed;
+      inset: 64px 0 0 0;
+      z-index: 99;
+      background: var(--surface);
+      padding: 32px 24px;
+      overflow-y: auto;
+    }
+    #nav_drawer.open { display: block; }
+    .nav-category {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      margin-top: 28px;
+    }
+    .nav-category:first-child { margin-top: 0; }
+    .nav-drawer-links a {
+      display: block;
+      padding: 10px 0;
+      font-size: 15px;
+      color: var(--ink);
+      border-bottom: 1px solid var(--border);
+      transition: color 0.15s;
+    }
+    .nav-drawer-links a:hover { color: var(--accent); }
+
+    /* ── 떠있는 버튼들 ──────────────────────── */
+    #floating_menu {
+      position: fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .float-btn {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .float-btn:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(0,0,0,0.22); }
+    .float-btn svg { width: 26px; height: 26px; }
+    .float-kakao  { background: #FEE500; }
+    .float-naver  { background: #03C75A; }
+    .float-youtube{ background: #FF0000; }
+    .float-map    { background: var(--accent); }
+
+    /* ── 첫 화면 큰 사진 ────────────────────── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 500px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2b4590 60%, #4a90d9 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 48px;
+    }
+    .hero-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-placeholder-text {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+    }
+    .hero-scroll {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.7);
+    }
+    .hero-scroll p {
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+    .scroll-arrow {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .scroll-arrow span {
+      display: block;
+      width: 10px; height: 10px;
+      border-right: 1.5px solid rgba(255,255,255,0.6);
+      border-bottom: 1.5px solid rgba(255,255,255,0.6);
+      transform: rotate(45deg);
+      animation: scrollDown 1.6s infinite;
+    }
+    .scroll-arrow span:nth-child(2) { animation-delay: 0.2s; opacity: 0.6; }
+    @keyframes scrollDown {
+      0%   { opacity: 0; transform: rotate(45deg) translate(-4px,-4px); }
+      50%  { opacity: 1; }
+      100% { opacity: 0; transform: rotate(45deg) translate(4px,4px); }
+    }
+
+    /* ── 퀵메뉴 4칸 ─────────────────────────── */
+    #quick_menu {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .quick-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--ink);
+    }
+    .quick-item .qi-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.4s ease;
+    }
+    .quick-item:hover .qi-bg { transform: scale(1.05); }
+    .quick-item:nth-child(1) .qi-bg { background: linear-gradient(135deg, #1a1a2e, #2b4590); }
+    .quick-item:nth-child(2) .qi-bg { background: linear-gradient(135deg, #2b4590, #1a5276); }
+    .quick-item:nth-child(3) .qi-bg { background: linear-gradient(135deg, #1a5276, #1abc9c); }
+    .quick-item:nth-child(4) .qi-bg { background: linear-gradient(135deg, #2c3e50, #c9a84c); }
+    .qi-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      gap: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .qi-label .qi-en {
+      font-size: 11px;
+      letter-spacing: 2px;
+      opacity: 0.7;
+      text-transform: uppercase;
+    }
+    .qi-label .qi-ko {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .qi-icon {
+      width: 44px; height: 44px;
+      margin-bottom: 4px;
+    }
+
+    /* ── 치과 안내 (지도 + 진료시간) ─────────── */
+    #direction_wrap {
+      background: var(--surface-2);
+      padding: 72px 24px;
+    }
+    .section-title {
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+    .section-heading {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 40px;
+    }
+    #direction_box {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    #store_map .map-placeholder {
+      width: 100%;
+      height: 280px;
+      background: var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    #store_map p {
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+    #store_map .addr-detail {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-top: 4px;
+    }
+
+    #hours_panel { }
+    #hours_panel .hours-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent);
+      display: inline-block;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .hours-row .day { color: var(--ink-soft); }
+    .hours-row .time { font-weight: 600; color: var(--ink); }
+    #phone_wrap {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--accent);
+      border-radius: var(--radius);
+      color: #fff;
+    }
+    #phone_wrap .ph-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+    #phone_wrap .ph-number {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* ── 주차 안내 ──────────────────────────── */
+    #parking_wrap {
+      padding: 72px 24px;
+      background: var(--surface);
+    }
+    #parking_wrap .section-heading { text-align: center; }
+    .parking-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .parking-card .park-img {
+      width: 100%;
+      height: 200px;
+      background: var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-soft);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+    .parking-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .parking-card p {
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .parking-desc {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      background: var(--surface-2);
+      border-radius: var(--radius);
+      font-size: 14px;
+      line-height: 2;
+      color: var(--text-body);
+    }
+    .parking-desc strong { color: var(--ink); }
+    .parking-desc b { color: #c0392b; }
+
+    /* ── 클리닉 안내 그리드 ─────────────────── */
+    #clinic_wrap {
+      padding: 72px 24px 0;
+      background: var(--surface-2);
+    }
+    #clinic_wrap .section-heading { text-align: center; }
+    .clinic-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 8px;
+    }
+    .clinic-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: var(--radius);
+      background: var(--ink);
+    }
+    .clinic-card .cc-bg {
+      width: 100%;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s;
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 1px;
+    }
+    .clinic-card:hover .cc-bg { transform: scale(1.04); }
+    .clinic-card:nth-child(1) .cc-bg { background: linear-gradient(135deg,#1a1a2e,#2b4590); }
+    .clinic-card:nth-child(2) .cc-bg { background: linear-gradient(135deg,#2b4590,#4a90d9); height: 448px; }
+    .clinic-card:nth-child(3) .cc-bg { background: linear-gradient(135deg,#1abc9c,#1a5276); }
+    .clinic-card:nth-child(4) .cc-bg { background: linear-gradient(135deg,#2c3e50,#4a4a6a); }
+    .clinic-card:nth-child(5) .cc-bg { background: linear-gradient(135deg,#c9a84c,#8e6914); }
+    .cc-label {
+      position: absolute;
+      bottom: 16px; left: 20px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    }
+    /* 2번 카드는 두 행에 걸치게 */
+    .clinic-card.tall {
+      grid-row: span 2;
+    }
+
+    /* ── 맨 아래 정보 칸 ────────────────────── */
+    #footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.75);
+      padding: 48px 24px 36px;
+    }
+    #footer_logo {
+      margin-bottom: 24px;
+    }
+    #footer_logo .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    #footer_logo .logo-sub {
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+    }
+    #footer_info {
+      font-size: 13px;
+      line-height: 2;
+      max-width: 640px;
+    }
+    #footer_info li { list-style: none; display: inline; }
+    #footer_info li + li::before { content: " | "; opacity: 0.4; }
+    #footer_info ul { margin-bottom: 4px; }
+
+    /* ── 콘텐츠 섹션 공통 ───────────────────── */
+    .content-wrap { max-width: 960px; margin: 0 auto; }
+    .section-lead {
+      font-size: 17px; line-height: 1.9;
+      color: var(--ink-soft); max-width: 640px; margin-bottom: 56px;
+    }
+
+    /* ── About 섹션 ────────────────────────── */
+    #about_wrap { padding: 88px 24px; background: var(--surface); }
+    .value-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px; margin-bottom: 64px;
+    }
+    .value-card {
+      padding: 28px 20px; background: var(--surface-2);
+      border-radius: var(--radius); border-top: 3px solid var(--accent);
+    }
+    .value-card h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 16px 0 10px; }
+    .value-card p  { font-size: 13px; line-height: 1.8; color: var(--ink-soft); }
+    .value-icon    { width: 40px; height: 40px; }
+    .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .diff-card {
+      padding: 32px 24px; background: var(--ink);
+      color: #fff; border-radius: var(--radius);
+    }
+    .diff-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--gold); }
+    .diff-card p  { font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.75); }
+
+    /* ── 디지털 클리닉 섹션 ─────────────────── */
+    #digital_wrap { padding: 88px 24px; background: var(--surface-2); }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-bottom: 48px;
+    }
+    .step-card {
+      padding: 28px 20px; background: var(--surface);
+      border-radius: var(--radius); border-bottom: 3px solid var(--accent-2);
+    }
+    .step-num { font-size: 32px; font-weight: 700; color: var(--accent); opacity: 0.25; line-height: 1; margin-bottom: 12px; }
+    .step-card h3 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+    .step-card p  { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+    .implant-brands { display: flex; gap: 12px; flex-wrap: wrap; }
+    .brand-tag {
+      padding: 8px 20px; border: 1px solid var(--border);
+      border-radius: 999px; font-size: 13px; color: var(--ink-soft); background: var(--surface);
+    }
+
+    /* ── 예방관리 섹션 ──────────────────────── */
+    #prevent_wrap { padding: 88px 24px; background: var(--surface); }
+    .health-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .health-card {
+      padding: 28px 20px; border-radius: var(--radius);
+      background: var(--surface-2); border-left: 4px solid var(--accent-2);
+    }
+    .health-card h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 0 0 10px; }
+    .health-card p  { font-size: 13px; color: var(--ink-soft); line-height: 1.8; }
+
+    /* ── 어르신 보험 임플란트 섹션 ─────────── */
+    #senior_wrap { padding: 88px 24px; background: #1a1a2e; color: #fff; }
+    #senior_wrap .section-title   { color: var(--gold); }
+    #senior_wrap .section-heading { color: #fff; }
+    #senior_wrap .section-lead    { color: rgba(255,255,255,0.75); }
+    .senior-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 64px; }
+    .insurance-conditions h3 { font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 16px; }
+    .condition-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .condition-list li { display: flex; align-items: center; gap: 10px; font-size: 15px; color: rgba(255,255,255,0.85); }
+    .cond-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+    .insurance-benefit { background: rgba(255,255,255,0.05); border-radius: var(--radius); padding: 28px; }
+    .insurance-benefit h3 { font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 20px; }
+    .benefit-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px;
+    }
+    .benefit-row .b-label { color: rgba(255,255,255,0.6); }
+    .benefit-row .b-value { font-weight: 700; color: #fff; }
+    .benefit-row .b-value.highlight { color: var(--gold); font-size: 22px; }
+    .senior-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .senior-step { background: rgba(255,255,255,0.05); border-radius: var(--radius); padding: 20px 12px; text-align: center; }
+    .senior-step .ss-num { font-size: 10px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; }
+    .senior-step h4 { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.4; }
+    .senior-step p  { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+    /* 콘텐츠 반응형 */
+    @media (max-width: 768px) {
+      .value-grid   { grid-template-columns: repeat(2, 1fr); }
+      .diff-grid    { grid-template-columns: 1fr; }
+      .steps-grid   { grid-template-columns: repeat(2, 1fr); }
+      .health-grid  { grid-template-columns: repeat(2, 1fr); }
+      .senior-top   { grid-template-columns: 1fr; }
+      .senior-steps { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .value-grid   { grid-template-columns: 1fr; }
+      .steps-grid   { grid-template-columns: 1fr; }
+      .health-grid  { grid-template-columns: 1fr; }
+      .senior-steps { grid-template-columns: repeat(2, 1fr); }
+      .section-lead { font-size: 15px; }
+    }
+
+    /* ── 접근성 ─────────────────────────────── */
+    :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── 휴대폰에서도 안 깨지게 ────────────── */
+    @media (max-width: 768px) {
+      #quick_menu { grid-template-columns: repeat(2, 1fr); }
+      #direction_box { grid-template-columns: 1fr; }
+      .parking-grid { grid-template-columns: 1fr; }
+      .clinic-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+      }
+      .clinic-card.tall { grid-row: span 1; }
+      .clinic-card:nth-child(2) .cc-bg { height: 220px; }
+      #floating_menu { right: 10px; }
+      .float-btn { width: 46px; height: 46px; }
+      .float-btn svg { width: 22px; height: 22px; }
+    }
+    @media (max-width: 480px) {
+      .section-heading { font-size: 22px; }
+      .clinic-grid { grid-template-columns: 1fr; }
+      .clinic-card.tall { grid-row: span 1; }
+      .clinic-card:nth-child(2) .cc-bg { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ① 맨 위 메뉴 줄 -->
+<header id="header">
+  <button id="header_menu" onclick="toggleNav()" aria-label="메뉴 열기" aria-expanded="false"
+          type="button">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="header_logo">
+    <a href="#" aria-label="보아치과 홈">
+      <div>
+        <span class="logo-text">Boa</span>
+        <span class="logo-sub">DENTAL CLINIC</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<!-- 풀다운 메뉴 -->
+<nav id="nav_drawer" aria-label="전체 메뉴">
+  <div class="nav-category">About us</div>
+  <div class="nav-drawer-links">
+    <a href="#about_wrap">보아의 비전과 이념</a>
+    <a href="#about_wrap">보아의 Family</a>
+    <a href="#direction_wrap">오시는 길</a>
+  </div>
+  <div class="nav-category">첨단 디지털 클리닉 보아</div>
+  <div class="nav-drawer-links">
+    <a href="#digital_wrap">디지털 가이드 임플란트</a>
+    <a href="#digital_wrap">디지털 치아 교정</a>
+    <a href="#digital_wrap">디지털 첨단장비</a>
+    <a href="#digital_wrap">디지털 마우스피스</a>
+  </div>
+  <div class="nav-category">평생 예방관리 클리닉</div>
+  <div class="nav-drawer-links">
+    <a href="#prevent_wrap">치과 치료의 중요성</a>
+    <a href="#prevent_wrap">보아치과 예방관리 프로그램</a>
+    <a href="#prevent_wrap">에어플로우와 페리오 플로우</a>
+  </div>
+  <div class="nav-category">어르신 보험 임플란트</div>
+  <div class="nav-drawer-links">
+    <a href="#senior_wrap">어르신 보험 임플란트</a>
+    <a href="#senior_wrap">시니어 교정</a>
+    <a href="#senior_wrap">어르신 구강관리 프로그램</a>
+  </div>
+</nav>
+
+<!-- ② 떠있는 버튼들 -->
+<aside id="floating_menu" aria-label="빠른 연결">
+  <a class="float-btn float-kakao" href="#" target="_blank" aria-label="카카오톡 상담">
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M12 3C6.477 3 2 6.925 2 11.75c0 3.07 1.74 5.77 4.36 7.42L5.5 22l3.82-2.02A11.4 11.4 0 0012 20.5c5.523 0 10-3.925 10-8.75S17.523 3 12 3z" fill="#3C1E1E"/>
+    </svg>
+  </a>
+  <a class="float-btn float-naver" href="#" target="_blank" aria-label="네이버 진료예약">
+    <svg viewBox="0 0 24 24" fill="white">
+      <path d="M13.4 12.36L10.12 7H7v10h3.6v-5.36L13.88 17H17V7h-3.6v5.36z"/>
+    </svg>
+  </a>
+  <a class="float-btn float-youtube" href="#" target="_blank" aria-label="유튜브">
+    <svg viewBox="0 0 24 24" fill="white">
+      <path d="M23 7s-.3-2-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.3 3 12 3 12 3s-4.3 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.3 12 21.3 12 21.3s4.3 0 6.8-.3c.6-.1 1.9-.1 3-1.2.9-.7 1.2-2.7 1.2-2.7s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 14.8V8.7l6.6 3.1-6.6 3z"/>
+    </svg>
+  </a>
+  <a class="float-btn float-map" href="#direction_wrap" aria-label="오시는 길">
+    <svg viewBox="0 0 24 24" fill="white">
+      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+    </svg>
+  </a>
+</aside>
+
+<!-- ③ 첫 화면 큰 사진 -->
+<section id="hero" aria-label="첫 화면">
+  <div class="hero-placeholder">
+    <span class="hero-placeholder-text">메인 영상 자리 · main_video.mp4</span>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <p>SCROLL</p>
+    <div class="scroll-arrow">
+      <span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ④ 퀵메뉴 4칸 -->
+<nav id="quick_menu" aria-label="주요 진료 바로가기">
+  <a class="quick-item" href="#about_wrap" aria-label="About us — 보아치과 소개">
+    <div class="qi-bg"></div>
+    <div class="qi-label">
+      <svg class="qi-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <circle cx="22" cy="22" r="20" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+        <circle cx="22" cy="17" r="5" stroke="white" stroke-width="1.5"/>
+        <path d="M10 34c0-6.627 5.373-10 12-10s12 3.373 12 10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="qi-en">About us</span>
+      <span class="qi-ko">보아치과 소개</span>
+    </div>
+  </a>
+  <a class="quick-item" href="#digital_wrap" aria-label="첨단 디지털 클리닉">
+    <div class="qi-bg"></div>
+    <div class="qi-label">
+      <svg class="qi-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <rect x="6" y="10" width="32" height="22" rx="3" stroke="white" stroke-width="1.5"/>
+        <path d="M15 32v4M29 32v4M12 36h20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M14 21l4 4 5-6 4 4 3-3" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="qi-en">Digital Clinic</span>
+      <span class="qi-ko">첨단 디지털 클리닉</span>
+    </div>
+  </a>
+  <a class="quick-item" href="#prevent_wrap" aria-label="평생 예방관리 클리닉">
+    <div class="qi-bg"></div>
+    <div class="qi-label">
+      <svg class="qi-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path d="M22 8C22 8 12 13 12 22a10 10 0 0020 0c0-9-10-14-10-14z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M18 22l3 3 5-6" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="qi-en">Prevention</span>
+      <span class="qi-ko">평생 예방관리</span>
+    </div>
+  </a>
+  <a class="quick-item" href="#senior_wrap" aria-label="어르신 보험 임플란트">
+    <div class="qi-bg"></div>
+    <div class="qi-label">
+      <svg class="qi-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <path d="M16 10c0 0-2 4-2 8s2 6 4 6 3-2 4-2 2 2 4 2 4-2 4-6-2-8-2-8" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M14 28l2 8h12l2-8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="qi-en">Senior Implant</span>
+      <span class="qi-ko">어르신 보험 임플란트</span>
+    </div>
+  </a>
+</nav>
+
+<!-- ④-a About Us -->
+<section id="about_wrap" aria-labelledby="about-heading">
+  <div class="content-wrap">
+    <p class="section-title">About Us</p>
+    <h2 class="section-heading" id="about-heading">보아치과 비전과 이념</h2>
+    <p class="section-lead">치과 치료를 처음 받는 사람부터 노인까지 모두가 평생 건강한 구강건강을 유지할 수 있도록 좋은 치과 치료를 받을 수 있는 공간을 만들겠다는 것이 보아치과의 핵심 가치입니다.</p>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <circle cx="20" cy="20" r="17" stroke="var(--accent)" stroke-width="1.5"/>
+          <path d="M13 21l4 4 9-10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>예방</h3>
+        <p>충치·치주질환을 예방하는 것이 환자들의 건강에 가장 도움이 된다고 믿습니다.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect x="8" y="10" width="24" height="20" rx="2" stroke="var(--accent)" stroke-width="1.5"/>
+          <path d="M13 17h14M13 22h10" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>교육</h3>
+        <p>지속적인 구강건강 교육을 통해 올바른 구강관리 방법을 알 수 있게 도와드립니다.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 8C20 8 10 14 10 22a10 10 0 0020 0c0-8-10-14-10-14z" stroke="var(--accent)" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M16 22l3 3 5-6" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>동기부여</h3>
+        <p>정기적인 구강건강 케어를 통해 지속적인 구강건강관리를 가능하게 합니다.</p>
+      </div>
+      <div class="value-card">
+        <svg class="value-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <path d="M20 8v24M8 20h24" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="20" cy="20" r="10" stroke="var(--accent)" stroke-width="1.5"/>
+        </svg>
+        <h3>치료</h3>
+        <p>적절한 시기에 치료받지 못하면 더 큰 문제가 될 수 있어, 이를 최소화하고자 노력합니다.</p>
+      </div>
+    </div>
+
+    <div class="diff-grid">
+      <div class="diff-card">
+        <h3>임플란트 기공 퀄리티 실명제</h3>
+        <p>임플란트 보철물을 직접 만들 수 있는 원장이 덴탈 테크닉스 기공소와 파트너십을 맺어 최상의 퀄리티를 보장합니다.</p>
+      </div>
+      <div class="diff-card">
+        <h3>디지털 클리닉</h3>
+        <p>디지털 기기를 이용해 더 정확하고 안전한 치과 치료를 제공합니다. 스마트한 치과 치료가 보아치과의 핵심 가치입니다.</p>
+      </div>
+      <div class="diff-card">
+        <h3>소독 및 위생관리</h3>
+        <p>모든 치료에 사용하는 기구 및 재료에 대해 엄격한 소독 관리를 시행합니다. 사용 전·후 철저히 관리됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④-b 첨단 디지털 클리닉 -->
+<section id="digital_wrap" aria-labelledby="digital-heading">
+  <div class="content-wrap">
+    <p class="section-title">Digital Clinic</p>
+    <h2 class="section-heading" id="digital-heading">첨단 디지털 클리닉 보아</h2>
+    <p class="section-lead">디지털 가이드 임플란트를 통해 더 정확하고, 더 안전한 임플란트 식립이 가능합니다.</p>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>3D 구강 스캔</h3>
+        <p>구강내 스캐너로 정밀하게 본을 뜨고 임플란트 식립을 계획합니다.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>CT 분석</h3>
+        <p>CT 분석을 통해 최적의 식립 위치를 계획하고 수술 가이드를 제작합니다.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>수술 가이드 정밀 식립</h3>
+        <p>출력된 수술 가이드 기반으로 계획한 위치에 정확하게 임플란트를 식립합니다.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>보철물 제작</h3>
+        <p>파트너 기공소 덴탈 테크닉스에서 최상의 보철물을 제작합니다.</p>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:16px;letter-spacing:1px;">사용 임플란트 재료</p>
+    <div class="implant-brands">
+      <span class="brand-tag">오스템 임플란트</span>
+      <span class="brand-tag">덴티움 임플란트</span>
+      <span class="brand-tag">스트라우만 임플란트</span>
+      <span class="brand-tag">노벨 바이오케어</span>
+    </div>
+  </div>
+</section>
+
+<!-- ④-c 평생 예방관리 클리닉 -->
+<section id="prevent_wrap" aria-labelledby="prevent-heading">
+  <div class="content-wrap">
+    <p class="section-title">Prevention</p>
+    <h2 class="section-heading" id="prevent-heading">평생 예방관리 클리닉</h2>
+    <p class="section-lead">여러 연구들에서 구강 건강이 전신 건강에 중요하다는 것이 알려져 있습니다.</p>
+
+    <div class="health-grid">
+      <div class="health-card">
+        <h3>당뇨</h3>
+        <p>치주 질환이 있을 경우 당뇨 혈당 관리가 어려울 수 있고, 당뇨가 있으면 치주 질환이 더 심해질 수 있습니다.</p>
+      </div>
+      <div class="health-card">
+        <h3>심혈관 질환</h3>
+        <p>치주 질환이 있을 경우 심혈관 질환의 위험도가 높아질 수 있다는 연구가 있습니다.</p>
+      </div>
+      <div class="health-card">
+        <h3>치매</h3>
+        <p>치아가 없거나 잇몸질환이 있을 경우 치매와의 연관이 있다는 연구가 있습니다.</p>
+      </div>
+      <div class="health-card">
+        <h3>조산</h3>
+        <p>임신 중 치주 질환이 있을 경우 조산 위험성이 높아질 수 있다는 연구가 있습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ④-d 어르신 보험 임플란트 -->
+<section id="senior_wrap" aria-labelledby="senior-heading">
+  <div class="content-wrap">
+    <p class="section-title">Senior Implant</p>
+    <h2 class="section-heading" id="senior-heading">어르신 보험 임플란트</h2>
+    <p class="section-lead">건강보험이 적용되는 임플란트로 더 합리적인 비용으로 임플란트 치료를 받아보세요.</p>
+
+    <div class="senior-top">
+      <div class="insurance-conditions">
+        <h3>보험 적용 대상</h3>
+        <ul class="condition-list">
+          <li><span class="cond-dot"></span>만 65세 이상</li>
+          <li><span class="cond-dot"></span>부분 무치악 (이가 없는 경우)</li>
+          <li><span class="cond-dot"></span>식이 장애가 있는 경우</li>
+        </ul>
+      </div>
+      <div class="insurance-benefit">
+        <h3>보험 급여 내용</h3>
+        <div class="benefit-row">
+          <span class="b-label">본인부담금</span>
+          <span class="b-value highlight">30%</span>
+        </div>
+        <div class="benefit-row">
+          <span class="b-label">보험 적용 횟수</span>
+          <span class="b-value">평생 2개까지</span>
+        </div>
+        <div class="benefit-row">
+          <span class="b-label">차액 본인부담금</span>
+          <span class="b-value">별도 안내</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="senior-steps">
+      <div class="senior-step">
+        <div class="ss-num">STEP 1</div>
+        <h4>상담 및 검사</h4>
+        <p>진료 예약 후 내원하여 상담 및 CT 검사</p>
+      </div>
+      <div class="senior-step">
+        <div class="ss-num">STEP 2</div>
+        <h4>발치</h4>
+        <p>남아있는 치아가 있을 경우 발치 진행 (필요 시)</p>
+      </div>
+      <div class="senior-step">
+        <div class="ss-num">STEP 3</div>
+        <h4>뼈 이식</h4>
+        <p>충분한 뼈가 없을 경우 먼저 진행 (필요 시)</p>
+      </div>
+      <div class="senior-step">
+        <div class="ss-num">STEP 4</div>
+        <h4>임플란트 식립</h4>
+        <p>디지털 가이드로 정확한 위치에 식립</p>
+      </div>
+      <div class="senior-step">
+        <div class="ss-num">STEP 5</div>
+        <h4>임시 보철</h4>
+        <p>임시 보철물로 일상생활 가능하게 함</p>
+      </div>
+      <div class="senior-step">
+        <div class="ss-num">STEP 6</div>
+        <h4>최종 보철</h4>
+        <p>뼈와 잘 결합한 후 최종 보철물 완성</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 치과 안내 -->
+<section id="direction_wrap" aria-labelledby="direction-heading">
+  <div style="max-width:960px;margin:0 auto;">
+    <p class="section-title">Find Us</p>
+    <h2 class="section-heading" id="direction-heading">치과 안내</h2>
+  </div>
+  <div id="direction_box">
+    <div id="store_map">
+      <div class="map-placeholder" role="img" aria-label="지도 자리">
+        지도 자리 · 네이버 지도 API 연동 예정
+      </div>
+      <p>서울특별시 강남구 테헤란로 107 4층<br>보아치과</p>
+      <p class="addr-detail">강남역 2호선 12번 출구 맥도날드 건물 4층</p>
+    </div>
+    <div id="hours_panel">
+      <div class="hours-title">진료 시간</div>
+      <div class="hours-row">
+        <span class="day">화 / 수 / 금</span>
+        <span class="time">09:30 – 18:00</span>
+      </div>
+      <div class="hours-row">
+        <span class="day">목요일</span>
+        <span class="time">09:30 – 20:30</span>
+      </div>
+      <div class="hours-row">
+        <span class="day">토요일</span>
+        <span class="time">09:00 – 13:30</span>
+      </div>
+      <div class="hours-row">
+        <span class="day">점심시간</span>
+        <span class="time">13:00 – 14:00</span>
+      </div>
+      <div class="hours-row">
+        <span class="day" style="color:#c0392b;">일 / 월 / 공휴일</span>
+        <span class="time" style="color:#c0392b;">휴진</span>
+      </div>
+      <div id="phone_wrap">
+        <p class="ph-label">전화번호</p>
+        <p class="ph-number"><a href="tel:0269250033" style="color:#fff;">02.6925.0033</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ 주차 안내 -->
+<section id="parking_wrap" aria-labelledby="parking-heading">
+  <div style="max-width:960px;margin:0 auto;">
+    <p class="section-title">Parking</p>
+    <h2 class="section-heading" id="parking-heading">주차장 오시는 길</h2>
+  </div>
+  <div class="parking-grid">
+    <div class="parking-card">
+      <div class="park-img" role="img" aria-label="강남대로 방향 주차 안내 지도 자리">
+        지도 이미지 자리
+      </div>
+      <h3><strong>강남대로</strong>에서 오시는 길</h3>
+      <p>(A)시계탑빌딩 → (B)메디타워 → (C)역삼문화공원 제1호 공영주차장</p>
+    </div>
+    <div class="parking-card">
+      <div class="park-img" role="img" aria-label="테헤란로 방향 주차 안내 지도 자리">
+        지도 이미지 자리
+      </div>
+      <h3><strong>테헤란로</strong>에서 오시는 길</h3>
+      <p>(B)메디타워 → (A)시계탑빌딩 → (C)역삼문화공원 제1호 공영주차장</p>
+    </div>
+  </div>
+  <div class="parking-desc">
+    <strong>A 시계탑빌딩:</strong> 서울시 강남구 강남대로 402 (주차타워, SUV·전기차 가능)<br>
+    <strong>B 메디타워:</strong> 서울시 강남구 테헤란로 107 (기계주차, 소형차량만 가능) <b>만차 잦음</b><br>
+    <strong>C 역삼문화공원 제1호 공영주차장:</strong> 서울시 강남구 테헤란로 7길 21 (5분당 300원, <b>주차지원 불가</b>)
+  </div>
+</section>
+
+<!-- ⑦ 클리닉 안내 그리드 -->
+<section id="clinic_wrap" aria-labelledby="clinic-heading">
+  <div style="max-width:960px;margin:0 auto;">
+    <p class="section-title">Our Clinic</p>
+    <h2 class="section-heading" id="clinic-heading">클리닉 안내</h2>
+  </div>
+  <div class="clinic-grid" style="max-width:960px;margin:0 auto;padding-bottom:72px;">
+    <a class="clinic-card" href="#digital_wrap" aria-label="디지털 치아 교정">
+      <div class="cc-bg">이미지 자리</div>
+      <span class="cc-label">디지털 치아 교정</span>
+    </a>
+    <a class="clinic-card tall" href="#digital_wrap" aria-label="디지털 가이드 임플란트">
+      <div class="cc-bg">이미지 자리</div>
+      <span class="cc-label">디지털 가이드 임플란트</span>
+    </a>
+    <a class="clinic-card" href="#digital_wrap" aria-label="디지털 첨단장비">
+      <div class="cc-bg">이미지 자리</div>
+      <span class="cc-label">디지털 첨단장비</span>
+    </a>
+    <a class="clinic-card" href="#prevent_wrap" aria-label="예방관리 프로그램">
+      <div class="cc-bg">이미지 자리</div>
+      <span class="cc-label">예방관리 프로그램</span>
+    </a>
+    <a class="clinic-card" href="#senior_wrap" aria-label="어르신 구강관리">
+      <div class="cc-bg">이미지 자리</div>
+      <span class="cc-label">어르신 구강관리</span>
+    </a>
+  </div>
+</section>
+
+<!-- ⑧ 맨 아래 정보 칸 -->
+<footer id="footer">
+  <div id="footer_logo">
+    <div class="logo-text">보아치과</div>
+    <div class="logo-sub">BOA DENTAL CLINIC</div>
+  </div>
+  <div id="footer_info">
+    <ul>
+      <li>보아치과</li>
+      <li>대표자 : 박정현</li>
+      <li>사업자등록번호 : 214-15-26506</li>
+    </ul>
+    <ul>
+      <li>서울특별시 강남구 테헤란로 107 4층 보아치과</li>
+    </ul>
+    <ul>
+      <li>전화번호 : 02-6925-0033</li>
+      <li>이메일 : boaclinic@naver.com</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  function toggleNav() {
+    var drawer = document.getElementById('nav_drawer');
+    var btn    = document.getElementById('header_menu');
+    var isOpen = drawer.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    btn.setAttribute('aria-label', isOpen ? '메뉴 닫기' : '메뉴 열기');
+  }
+  // 메뉴 바깥 클릭 시 닫기
+  document.addEventListener('click', function(e) {
+    var drawer = document.getElementById('nav_drawer');
+    var btn    = document.getElementById('header_menu');
+    if (drawer.classList.contains('open')
+        && !drawer.contains(e.target)
+        && !btn.contains(e.target)) {
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', '메뉴 열기');
+    }
+  });
+  // 메뉴 안 링크 클릭 시 드로어 닫기 + 부드럽게 이동
+  document.getElementById('nav_drawer').addEventListener('click', function(e) {
+    var link = e.target.closest('a[href]');
+    if (link && link.getAttribute('href').startsWith('#')) {
+      var drawer = document.getElementById('nav_drawer');
+      var btn    = document.getElementById('header_menu');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', '메뉴 열기');
+    }
+  });
+  // 퀵메뉴 클릭 시도 부드럽게 이동 (scroll-behavior: smooth 는 이미 html에 적용)
+</script>
+
+</body>
+</html>
