@@ -150,7 +150,9 @@
       width: 100%;
       height: 100vh;
       min-height: 500px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #2b4590 60%, #4a90d9 100%);
+      background:
+        linear-gradient(180deg, rgba(10,14,30,.35) 0%, rgba(10,14,30,.05) 45%, rgba(10,14,30,.55) 100%),
+        url('img/hero.jpg') center/cover no-repeat;
       display: flex;
       align-items: flex-end;
       justify-content: center;
@@ -220,10 +222,10 @@
       transition: transform 0.4s ease;
     }
     .quick-item:hover .qi-bg { transform: scale(1.05); }
-    .quick-item:nth-child(1) .qi-bg { background: linear-gradient(135deg, #1a1a2e, #2b4590); }
-    .quick-item:nth-child(2) .qi-bg { background: linear-gradient(135deg, #2b4590, #1a5276); }
-    .quick-item:nth-child(3) .qi-bg { background: linear-gradient(135deg, #1a5276, #1abc9c); }
-    .quick-item:nth-child(4) .qi-bg { background: linear-gradient(135deg, #2c3e50, #c9a84c); }
+    .quick-item:nth-child(1) .qi-bg { background: linear-gradient(135deg, rgba(26,26,46,.78), rgba(43,69,144,.55)), url('img/quickmenu_aboutus.png') center/cover; }
+    .quick-item:nth-child(2) .qi-bg { background: linear-gradient(135deg, rgba(43,69,144,.75), rgba(26,82,118,.5)), url('img/quickmenu_digital.png') center/cover; }
+    .quick-item:nth-child(3) .qi-bg { background: linear-gradient(135deg, rgba(26,82,118,.72), rgba(26,188,156,.45)), url('img/quickmenu_lifetime.png') center/cover; }
+    .quick-item:nth-child(4) .qi-bg { background: linear-gradient(135deg, rgba(44,62,80,.75), rgba(201,168,76,.5)), url('img/quickmenu_senior_implant.png') center/cover; }
     .qi-label {
       position: absolute;
       inset: 0;
@@ -423,11 +425,11 @@
       letter-spacing: 1px;
     }
     .clinic-card:hover .cc-bg { transform: scale(1.04); }
-    .clinic-card:nth-child(1) .cc-bg { background: linear-gradient(135deg,#1a1a2e,#2b4590); }
-    .clinic-card:nth-child(2) .cc-bg { background: linear-gradient(135deg,#2b4590,#4a90d9); height: 448px; }
-    .clinic-card:nth-child(3) .cc-bg { background: linear-gradient(135deg,#1abc9c,#1a5276); }
-    .clinic-card:nth-child(4) .cc-bg { background: linear-gradient(135deg,#2c3e50,#4a4a6a); }
-    .clinic-card:nth-child(5) .cc-bg { background: linear-gradient(135deg,#c9a84c,#8e6914); }
+    .clinic-card:nth-child(1) .cc-bg { background: linear-gradient(180deg, rgba(26,26,46,.15), rgba(26,26,46,.6)), url('img/main_digital_left.png') center/cover; }
+    .clinic-card:nth-child(2) .cc-bg { background: linear-gradient(180deg, rgba(26,26,46,.1), rgba(26,26,46,.6)), url('img/main_digital_implant.png') center/cover; height: 448px; }
+    .clinic-card:nth-child(3) .cc-bg { background: linear-gradient(180deg, rgba(26,26,46,.15), rgba(26,26,46,.6)), url('img/main_digital_right.png') center/cover; }
+    .clinic-card:nth-child(4) .cc-bg { background: linear-gradient(180deg, rgba(26,26,46,.2), rgba(26,26,46,.65)), url('img/hero.jpg') center/cover; }
+    .clinic-card:nth-child(5) .cc-bg { background: linear-gradient(180deg, rgba(44,62,80,.2), rgba(44,62,80,.65)), url('img/quickmenu_senior_implant.png') center/cover; }
     .cc-label {
       position: absolute;
       bottom: 16px; left: 20px;
@@ -672,7 +674,7 @@
 <!-- ③ 첫 화면 큰 사진 -->
 <section id="hero" aria-label="첫 화면">
   <div class="hero-placeholder">
-    <span class="hero-placeholder-text">메인 영상 자리 · main_video.mp4</span>
+    <span class="hero-placeholder-text" style="font-size:15px;letter-spacing:6px;">BOA DENTAL CLINIC</span>
   </div>
   <div class="hero-scroll" aria-hidden="true">
     <p>SCROLL</p>
@@ -979,16 +981,14 @@
   </div>
   <div class="parking-grid">
     <div class="parking-card">
-      <div class="park-img" role="img" aria-label="강남대로 방향 주차 안내 지도 자리">
-        지도 이미지 자리
-      </div>
+      <div class="park-img" role="img" aria-label="강남대로 방향 주차 안내 약도"
+           style="background:url('img/main_park_1.png') center/cover;color:transparent;"></div>
       <h3><strong>강남대로</strong>에서 오시는 길</h3>
       <p>(A)시계탑빌딩 → (B)메디타워 → (C)역삼문화공원 제1호 공영주차장</p>
     </div>
     <div class="parking-card">
-      <div class="park-img" role="img" aria-label="테헤란로 방향 주차 안내 지도 자리">
-        지도 이미지 자리
-      </div>
+      <div class="park-img" role="img" aria-label="테헤란로 방향 주차 안내 약도"
+           style="background:url('img/main_park_2.png') center/cover;color:transparent;"></div>
       <h3><strong>테헤란로</strong>에서 오시는 길</h3>
       <p>(B)메디타워 → (A)시계탑빌딩 → (C)역삼문화공원 제1호 공영주차장</p>
     </div>
