@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보아치과 예방관리 프로그램 — 보아치과</title>
+<style>
+  :root{--ink:#333;--sub:#666;--line:#e0e0e0;--blue:#0f4f9d;--mint:#15a78c;--hours-bg:#eef5fb}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Apple SD Gothic Neo','NanumBarunGothic','Noto Sans KR',sans-serif;color:var(--ink);background:#fff;line-height:1.6}
+  img{display:block;max-width:100%} a{color:inherit;text-decoration:none}
+  #header{position:fixed;top:0;left:0;right:0;z-index:100;background:#fff;border-bottom:1px solid rgba(0,0,0,.06)}
+  #header_container{height:72px;display:flex;align-items:center;padding:0 28px;position:relative}
+  #header_menu{display:flex;align-items:center;gap:9px;cursor:pointer}
+  #header_menu img{width:26px} #header_menu p{font-size:15px}
+  #header_logo{position:absolute;left:50%;transform:translateX(-50%)} #header_logo img{height:34px}
+  .detail-menu{position:fixed;inset:0;background:#fff;z-index:200;display:none;padding:90px 8vw 60px;overflow:auto}
+  .detail-menu.open{display:block}
+  .close-detail-menu{position:absolute;top:26px;right:30px;width:26px;cursor:pointer}
+  .detail-menu-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;max-width:1180px;margin:40px auto 0}
+  .menu-category{display:block;font-size:19px;font-weight:800;color:var(--blue);padding-bottom:14px;margin-bottom:16px;border-bottom:2px solid var(--blue)}
+  .detail-menu-area a{display:block;font-size:15.5px;color:var(--sub);padding:7px 0}
+  .detail-menu-area a:hover{color:var(--blue)}
+  #floating_menu_wrap{position:fixed;right:22px;top:96px;z-index:90;display:flex;flex-direction:column;gap:10px}
+  #floating_menu_wrap img{width:46px;height:46px;border-radius:50%;box-shadow:0 3px 10px rgba(0,0,0,.18)}
+  .page-banner{margin-top:72px;height:300px;position:relative;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(rgba(15,35,60,.5),rgba(15,35,60,.5)),url('img/banner_lobby.jpg') center/cover}
+  .page-banner .in{text-align:center;color:#fff}
+  .page-banner .eyebrow{font-size:14px;letter-spacing:.2em;opacity:.85}
+  .page-banner h1{font-size:38px;font-weight:800;margin-top:8px}
+  main{max-width:920px;margin:0 auto;padding:64px 24px 80px}
+  .lead{font-size:19px;line-height:1.75;color:var(--ink);text-align:center;max-width:760px;margin:0 auto 52px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+  .card{border:1px solid var(--line);padding:26px 24px}
+  .card h3{font-size:17px;font-weight:800;color:var(--blue);margin-bottom:10px}
+  .card p{font-size:14.5px;color:var(--sub)}
+  .steps{display:flex;flex-direction:column;gap:16px;max-width:720px;margin:0 auto}
+  .step{display:flex;gap:18px;border:1px solid var(--line);padding:22px 24px;align-items:flex-start}
+  .step>span{font-size:15px;font-weight:800;color:var(--mint);white-space:nowrap;padding-top:2px}
+  .step h3{font-size:16.5px;font-weight:800;margin-bottom:6px}
+  .step p{font-size:14.5px;color:var(--sub)}
+  .note{margin-top:34px;padding:18px 22px;background:var(--hours-bg);font-size:13.5px;color:var(--sub);text-align:center}
+  .cta{background:var(--hours-bg);padding:44px 24px;text-align:center}
+  .cta .tel{font-size:26px;font-weight:800;color:var(--mint);font-family:'Helvetica Neue',Arial,sans-serif}
+  .cta p{font-size:14px;color:var(--sub);margin-top:6px}
+  .cta .back{display:inline-block;margin-top:18px;padding:11px 26px;border:1px solid var(--blue);color:var(--blue);font-size:14px;font-weight:700}
+  #footer{display:flex;align-items:center;gap:34px;padding:34px 6vw;flex-wrap:wrap}
+  #footer_logo img{height:40px}
+  #footer ul{list-style:none;font-size:12.5px;color:var(--sub)}
+  #footer li{display:inline} #footer li+li::before{content:"|";margin:0 10px;color:#ccc}
+  @media (max-width:860px){.detail-menu-wrap{grid-template-columns:1fr 1fr;gap:26px}
+    .page-banner h1{font-size:28px} .page-banner{height:220px}}
+</style>
+</head>
+<body>
+<header id="header"><div id="header_container">
+  <div id="header_menu" onclick="document.querySelector('.detail-menu').classList.add('open')" role="button" tabindex="0" aria-label="메뉴 열기">
+    <img src="img/icon-menu.svg" alt=""><p>메뉴</p></div>
+  <div id="header_logo"><a href="index.html"><img src="img/logo.svg" alt="보아치과"></a></div>
+</div></header>
+<div class="detail-menu" role="dialog" aria-label="전체 메뉴">
+  <img class="close-detail-menu" src="img/icon-close.svg" alt="닫기" onclick="this.parentElement.classList.remove('open')">
+  <div class="detail-menu-wrap"><div class="detail-menu-area"><span class="menu-category">About us</span><a href="vision.html" onclick="closeMenu()"><span>보아의 비전과 이념</span></a><a href="staff.html" onclick="closeMenu()"><span>보아의 Family</span></a><a href="index.html#direction_wrap" onclick="closeMenu()"><span>오시는 길</span></a></div><div class="detail-menu-area"><span class="menu-category">첨단 디지털 클리닉 보아</span><a href="digital-guide-implant.html" onclick="closeMenu()"><span>디지털 가이드 임플란트</span></a><a href="digital-tooth-correction.html" onclick="closeMenu()"><span>디지털 치아 교정</span></a><a href="high-tech-equipment.html" onclick="closeMenu()"><span>디지털 첨단장비</span></a><a href="digital-mouthpiece.html" onclick="closeMenu()"><span>디지털 마우스피스</span></a></div><div class="detail-menu-area"><span class="menu-category">평생 예방관리 클리닉</span><a href="prevent-care.html" onclick="closeMenu()"><span>치과 치료의 중요성</span></a><a href="prevent-program.html" onclick="closeMenu()"><span>보아치과 예방관리 프로그램</span></a><a href="airflow-and-perioflow.html" onclick="closeMenu()"><span>에어플로우와 페리오 플로우</span></a></div><div class="detail-menu-area"><span class="menu-category">어르신 보험 임플란트</span><a href="senior-insurance-implant.html" onclick="closeMenu()"><span>어르신 보험 임플란트</span></a><a href="senior-tooth-correction.html" onclick="closeMenu()"><span>시니어 교정</span></a><a href="senior-toothcare-program.html" onclick="closeMenu()"><span>어르신 구강관리 프로그램</span></a></div></div>
+</div>
+<div id="floating_menu_wrap">
+  <a title="상담톡" href="http://pf.kakao.com/_xdDYbV/chat" target="_blank" rel="noopener"><img src="img/btn_float_kakao.png" alt="상담톡"></a>
+  <a title="진료예약" href="https://booking.naver.com/booking/13/bizes/290257" target="_blank" rel="noopener"><img src="img/btn_float_naver.png" alt="진료예약"></a>
+  <a title="유튜브" href="https://www.youtube.com/@2809TV" target="_blank" rel="noopener"><img src="img/btn_float_youtube.png" alt="유튜브"></a>
+  <a title="오시는 길" href="index.html#direction_wrap"><img src="img/btn_float_direction.png" alt="오시는 길"></a>
+</div>
+<div class="page-banner"><div class="in"><p class="eyebrow">평생 예방관리 클리닉</p><h1>보아치과 예방관리 프로그램</h1></div></div>
+<main>
+  <p class="lead">나이와 구강 상태에 따라 필요한 관리가 다릅니다. 생애주기별로 프로그램을 나눠 운영합니다.</p>
+  <div class="steps">
+ <div class="step"><span>유아·어린이</span><div><h3>첫 검진과 습관 만들기</h3><p>충치 예방 처치와 올바른 양치 교육으로 평생 습관의 기초를 만듭니다.</p></div></div>
+ <div class="step"><span>청소년·성인</span><div><h3>정기 검진과 스케일링</h3><p>바쁜 일상에 맞춘 검진 주기를 설계하고 문자로 안내드립니다.</p></div></div>
+ <div class="step"><span>중장년</span><div><h3>잇몸 집중 관리</h3><p>잇몸 질환은 자각 증상이 늦습니다. 잇몸 검사와 관리 주기를 촘촘히 가져갑니다.</p></div></div>
+ <div class="step"><span>어르신</span><div><h3>유지·보철 관리</h3><p>남은 치아를 지키는 관리와 보철물 점검을 함께 진행합니다.</p></div></div>
+ </div>
+</main>
+<div class="cta">
+  <p style="font-size:16px;font-weight:700;color:var(--ink)">상담·예약 문의</p>
+  <p class="tel">02.6925.0033</p>
+  <p>화/수/금 09:30-18:00 · 목 09:30-20:30 · 토 09:00-13:30</p>
+  <a class="back" href="index.html">← 메인으로 돌아가기</a>
+</div>
+<footer id="footer">
+  <div id="footer_logo"><a href="index.html"><img src="img/footer_logo.svg" alt="보아치과"></a></div>
+  <div><ul><li>보아치과</li><li>서울특별시 강남구 테헤란로 107 4층</li><li>전화 02-6925-0033</li></ul></div>
+</footer>
+<script>
+  function closeMenu(){document.querySelector('.detail-menu').classList.remove('open')}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
+</script>
+</body>
+</html>
